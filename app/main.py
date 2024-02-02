@@ -42,7 +42,7 @@ def search_book(book_id):
     
 @app.route('/add_user_form')
 def add_user_form():
-    return render_template('add_user_form.html')
+    return render_template('yay.html')
 
 # -----------------  POST ----------------
 def execute_query(query, params=None):
