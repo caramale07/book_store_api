@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: users
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: randomstate42
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  flask-app:
+    image: my-flask-app:latest # Set the correct path to your Flask app
+    ports:
+      - "5000:5000"
+    depends_on:
+      - postgres
+    environment:
+      DB_DBNAME: users
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASS: randomstate42
+      DB_HOST: postgres
+
+volumes:
+  postgres_data:

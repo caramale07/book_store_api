@@ -48,27 +48,22 @@ def add_user_form():
 def execute_query(query, params=None):
     connection = None
     try:
-        # Connect to the PostgreSQL database
         connection = psycopg2.connect(**db_params)
         cursor = connection.cursor()
 
-        # Execute the query
         if params:
             cursor.execute(query, params)
         else:
             cursor.execute(query)
 
-        # Commit the changes
         connection.commit()
 
     except psycopg2.Error as e:
-        # Handle database error
         if connection:
             connection.rollback()
         return str(e), 500
 
     finally:
-        # Close the database connection
         if connection:
             connection.close()
 
@@ -82,6 +77,7 @@ def add_user():
     # Check if the email is already registered
     query_check_email = sql.SQL("SELECT 1 FROM users WHERE email = {} LIMIT 1").format(sql.Literal(email))
     result = execute_query(query_check_email)
+    
     if result and result[0]:
         return jsonify({'message': 'Email already registered'}), 400
 
